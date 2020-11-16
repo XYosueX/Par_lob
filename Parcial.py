@@ -7,7 +7,7 @@ from tkinter import messagebox
 
 #------------------------------------------------------------------------#
 
-def salir():
+def salir(root):
     root.destroy()
     
 def SillasCine():
@@ -16,19 +16,30 @@ def SillasCine():
     root2.geometry("350x200")  # X-Y
 
     archivo = open("CAIPA1143140121-01S.txt", "r")
-    a = []
-    b = []
- 
+    sillas = {}
     
-    for i in archivo:
-        dato = i.split("-")
-        a.append(dato[1])
-        b.append(dato[1])
+    for linea in archivo:
+        
+        datos = linea.strip()
+        datos = datos.split(":")
+
+        fila = datos[0]
+        
+        datos = datos[1].split("-")
+        columnas = []
+
+        for columna in datos:
+            columnas.append(columna)
+
+        if sillas == {}:
+            sillas = {fila:columnas}
+        else:
+            sillas[fila]=columnas
+        
         #horas.append(dato[3])
    
-    print(a)    
-    print(b)
-    #print(horas)
+    print(sillas)    
+    
     archivo.close()
 
     def salir():
@@ -124,7 +135,7 @@ def mostrar():
     sillas.grid(row=8, column=1, padx=10, pady=10)
 
     #acerca = ttk.Button(root, text="Acerca De", command = acercaDe)
-    cancelar = ttk.Button(root, text="Salir", command = salir)
+    cancelar = ttk.Button(root, text="Salir", command =lambda : salir(root))
 
     #acerca.grid(row=8, column=0, padx=10, pady=10)
     cancelar.grid(row=9, column=0, padx=10, pady=10)
@@ -161,3 +172,4 @@ btn_info.grid(row=3, column=0, padx=30, pady=10)
 mainframe.grid(row=0, column=0, padx=10, pady=10)
 
 main.mainloop()
+
